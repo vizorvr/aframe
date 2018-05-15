@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello, WebVR! - A-Frame</title>
+    <script src="../../../dist/aframe-master.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function(event) {
+        var scene = document.querySelector('a-scene');
+        var camera = document.querySelector('#camera');
+        var counter = document.querySelector('#counter');
+        var boxes = [];
+        var sysGeometry = scene.systems.geometry;
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === '1') addBox();
+          if (e.key === '2') removeBox();
+          if (e.key === '3') sysGeometry.clearCache();
+        });
+        
+        function addBox() {
+          let box = createBox();
+          boxes.push(box);
+          scene.appendChild(box);
+          counter.setAttribute('text', 'value', boxes.length);
+          console.log('geometry cache', sysGeometry.cache);
+          console.log('geometry cacheCount', sysGeometry.cacheCount);
+        }
+        
+        function removeBox() {
+          if (boxes.length) {
+            scene.removeChild(boxes.pop());
+            counter.setAttribute('text', 'value', boxes.length);
+          }
+        }
+        
+        function createBox() {
+          var box = document.createElement('a-entity');
+          box.setAttribute('position', '0 0 -5');
+          box.setAttribute('rotation', '0 0 0');
+          box.setAttribute('geometry', {
+            primitive: 'box',
+            width: 1,
+            height: 1,
+            depth: 1
+          });
+          box.setAttribute('material', {
+            shader: 'flat',
+            color: '#ff0000'
+          });
+          return box;
+        }
+        
+        // Add the first box.
+        addBox();
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene>
+      <a-sky color="#eee"></a-sky>
+      <a-entity id="camera" camera position="0 1.6 0">
+      </a-entity>
+      <a-entity
+        id="counter"
+        text="
+          value: Hello;
+          color: #000000;
+          width: 1;
+          height: 1;
+          wrapCount: 4;
+        "
+        position="0.5 0.2 -4"
+      ></a-entity>
+    </a-scene>
+  </body>
+</html>

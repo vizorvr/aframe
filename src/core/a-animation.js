@@ -142,7 +142,7 @@ module.exports.AAnimation = registerElement('a-animation', {
           .repeat(repeat)
           .yoyo(yoyo)
           .onUpdate(function () {
-            self.partialSetAttribute(this);
+            self.partialSetAttribute(self.tween._object);
           })
           .onComplete(bind(self.onCompleted, self));
       }

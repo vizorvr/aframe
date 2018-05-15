@@ -1,5 +1,4 @@
 var registerSystem = require('../core/system').registerSystem;
-var utils = require('../utils');
 
 /**
  * Tracked controls system.
@@ -11,8 +10,9 @@ module.exports.System = registerSystem('tracked-controls', {
 
     this.controllers = [];
 
-    this.updateControllerList(navigator.getGamepads && navigator.getGamepads());
-    this.throttledUpdateControllerList = utils.throttle(this.updateControllerList, 500, this);
+    this.updateControllerList();
+    this._updateTime = 0;
+    this._updateThreshold = 500;
 
     if (!navigator.getVRDisplays) { return; }
 
@@ -23,26 +23,34 @@ module.exports.System = registerSystem('tracked-controls', {
     });
   },
 
-  tick: function () {
-    var gamepads;
-    // Call getGamepads for Chrome.
-    gamepads = navigator.getGamepads && navigator.getGamepads();
-    this.throttledUpdateControllerList(gamepads);
+  tick: function (time, timeDelta) {
+    if (navigator.getGamepads) {
+      if (this._updateTime > this._updateThreshold) {
+        this.updateControllerList();
+        this._updateTime = 0;
+      } else {
+        this._updateTime += timeDelta;
+      }
+    }
   },
 
   /**
    * Update controller list.
    */
-  updateControllerList: function (gamepads) {
-    var controllers = this.controllers;
+  updateControllerList: function () {
+    var gamepads;
+    var controllers;
     var gamepad;
     var i;
     var prevCount;
 
+    gamepads = navigator.getGamepads && navigator.getGamepads();
     if (!gamepads) { return; }
 
+    controllers = this.controllers;
     prevCount = controllers.length;
     controllers.length = 0;
+
     for (i = 0; i < gamepads.length; ++i) {
       gamepad = gamepads[i];
       if (gamepad && gamepad.pose) {

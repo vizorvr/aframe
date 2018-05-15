@@ -354,7 +354,9 @@ module.exports.Component = registerComponent('raycaster', {
   drawLine: function (length) {
     var data = this.data;
     var el = this.el;
+    var line = el.components.line;
     var endVec3;
+    var geoPos;
 
     // Switch each time vector so line update triggered and to avoid unnecessary vector clone.
     endVec3 = this.lineData.end === this.lineEndVec3
@@ -370,7 +372,19 @@ module.exports.Component = registerComponent('raycaster', {
     // given by data.direction, then we apply a scalar to give it a length.
     this.lineData.start = data.origin;
     this.lineData.end = endVec3.copy(this.unitLineEndVec3).multiplyScalar(length);
-    el.setAttribute('line', this.lineData);
+    if (line) {
+      geoPos = line.geometry.attributes.position;
+      geoPos.array[0] = line.data.start.x = this.lineData.start.x;
+      geoPos.array[1] = line.data.start.y = this.lineData.start.y;
+      geoPos.array[2] = line.data.start.z = this.lineData.start.z;
+      geoPos.array[3] = line.data.end.x = this.lineData.end.x;
+      geoPos.array[4] = line.data.end.y = this.lineData.end.y;
+      geoPos.array[5] = line.data.end.z = this.lineData.end.z;
+      geoPos.needsUpdate = true;
+      line.geometry.computeBoundingSphere();
+    } else {
+      el.setAttribute('line', this.lineData);
+    }
   },
 
   /**
