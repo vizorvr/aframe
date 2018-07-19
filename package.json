@@ -46,7 +46,7 @@
     "present": "0.0.6",
     "promise-polyfill": "^3.1.0",
     "style-attr": "^1.0.2",
-    "three": "github:vizorvr/three.js#d177f9f",
+    "three": "github:vizorvr/three.js#36ac92d",
     "three-bmfont-text": "^2.1.0",
     "webvr-polyfill": "^0.10.5"
   },
