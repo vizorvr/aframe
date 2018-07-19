@@ -31292,6 +31292,12 @@ function rebuildAttribute (attrib, data, itemSize) {
 	        delete this.idToIndex[id];
 	        this.indexToID.splice(index, 1);
 
+	        for (var key in this.idToIndex) {
+	            if (this.idToIndex[key] > index) {
+	                --this.idToIndex[key];
+	            }
+	        }
+
 	        --this.maxInstancedCount;
 
 	        this._matAttrib0 = this._removeInstanceAttribData(this._matAttrib0, index);
@@ -65855,7 +65861,7 @@ module.exports={
     "present": "0.0.6",
     "promise-polyfill": "^3.1.0",
     "style-attr": "^1.0.2",
-    "three": "github:vizorvr/three.js#36ac92d",
+    "three": "github:vizorvr/three.js#21bf2e5",
     "three-bmfont-text": "^2.1.0",
     "webvr-polyfill": "^0.10.5"
   },
@@ -78606,7 +78612,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-07-19, Commit #809161b)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-07-19, Commit #1752b48)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
