@@ -208,6 +208,7 @@ module.exports.Component = registerComponent('text', {
     }).then(function setFont (font) {
       var coercedData;
       var fontImgSrc;
+      if (!self.geometry) return;
 
       if (font.pages.length !== 1) {
         throw new Error('Currently only single-page bitmap fonts are supported.');
@@ -230,6 +231,7 @@ module.exports.Component = registerComponent('text', {
       cache.get(fontImgSrc, function () {
         return loadTexture(fontImgSrc);
       }).then(function (image) {
+        if (!self.texture) return;
         // Make mesh visible and apply font image as texture.
         var texture = self.texture;
         texture.image = image;
