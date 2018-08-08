@@ -1,6 +1,6 @@
 {
   "name": "@vizorvr/aframe",
-  "version": "0.8.203",
+  "version": "0.8.204",
   "description": "A web framework for building virtual reality experiences.",
   "homepage": "https://aframe.io/",
   "main": "src/index.js",
